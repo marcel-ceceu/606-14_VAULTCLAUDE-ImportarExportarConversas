@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vault Hub — Competição de Layout (Marcia · Carlos · Ana)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #6d28d9;
+      --purple-light: #ede9fe;
+      --violet: #7c3aed;
+      --cyan: #0891b2;
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text: #18181b;
+      --muted: #71717a;
+      --border: #e4e4e7;
+      --ok: #16a34a;
+      --warn: #d97706;
+      --radius: 12px;
+    }
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: #f0f0f3;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* —— Seletor de competição —— */
+    .competition-bar {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      background: #111827;
+      color: #f9fafb;
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 16px;
+      border-bottom: 3px solid var(--purple);
+    }
+    .competition-bar h1 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+    .competition-bar p {
+      font-size: 11px;
+      opacity: 0.6;
+      flex: 1;
+      min-width: 200px;
+    }
+    .persona-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .persona-btn {
+      border: 2px solid transparent;
+      background: #374151;
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .persona-btn:hover { background: #4b5563; }
+    .persona-btn.active-marcia { background: #059669; border-color: #34d399; }
+    .persona-btn.active-carlos { background: var(--purple); border-color: #c4b5fd; }
+    .persona-btn.active-ana { background: #0369a1; border-color: #7dd3fc; }
+    .persona-tag {
+      font-size: 10px;
+      font-weight: 500;
+      opacity: 0.75;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .variant { display: none; min-height: calc(100vh - 56px); }
+    .variant.active { display: block; }
+
+    /* ═══════════════════════════════════════
+       MARCIA — estreito, essencial, vertical
+       ═══════════════════════════════════════ */
+    .marcia {
+      --m-accent: #059669;
+      --m-accent-bg: #ecfdf5;
+      --m-width: 780px;
+      background: #f8fafc;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+    }
+    .marcia .shell { max-width: var(--m-width); margin: 0 auto; padding: 20px 16px 48px; }
+    .marcia .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .marcia .brand-icon {
+      width: 36px; height: 36px;
+      background: var(--m-accent);
+      color: #fff;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+    .marcia .brand-row h2 { font-size: 18px; font-weight: 700; }
+    .marcia .brand-row span { font-size: 12px; color: var(--muted); }
+
+    .marcia .chrome-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 0;
+    }
+    .marcia .chrome-tab {
+      flex: 1;
+      max-width: 50%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      background: #eef2f6;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      text-align: center;
+    }
+    .marcia .chrome-tab.on {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--border);
+      margin-bottom: -2px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .marcia .panel {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 0 0 12px 12px;
+      padding: 24px 20px;
+    }
+    .marcia .page-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .marcia .page-desc { font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+    .marcia .badge {
+      display: inline-block;
+      background: var(--m-accent-bg);
+      color: var(--m-accent);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .marcia .big-step {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: #fafafa;
+    }
+    .marcia .big-step.done { border-color: #86efac; background: #f0fdf4; }
+    .marcia .big-step-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .marcia .step-num {
+      width: 32px; height: 32px;
+      background: var(--m-accent);
+      color: #fff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .marcia .big-step h3 { font-size: 16px; font-weight: 600; }
+    .marcia .big-step p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .marcia .btn-primary {
+      display: block;
+      width: 100%;
+      margin-top: 14px;
+      padding: 14px 20px;
+      background: var(--m-accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .marcia .btn-primary:hover { filter: brightness(1.05); }
+    .marcia .btn-secondary {
+      display: inline-block;
+      padding: 10px 16px;
+      border: 2px solid var(--border);
+      background: #fff;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-top: 8px;
+    }
+    .marcia .hint-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin: 16px 0;
+      line-height: 1.5;
+    }
+    .marcia textarea, .marcia input[type="text"] {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .marcia .export-stack { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .marcia .export-stack button {
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+    }
+    .marcia .export-stack button.main {
+      background: var(--m-accent);
+      color: #fff;
+      border-color: var(--m-accent);
+    }
+
+    /* ═══════════════════════════════════════
+       CARLOS — largo, bold, stepper horizontal
+       ═══════════════════════════════════════ */
+    .carlos {
+      --c-grad: linear-gradient(135deg, #6366f1 0%, #a855f7 45%, #06b6d4 100%);
+      font-family: "Instrument Sans", system-ui, sans-serif;
+      background: linear-gradient(160deg, #f5f3ff 0%, #ecfeff 40%, #fafafa 100%);
+      min-height: calc(100vh - 56px);
+    }
+    .carlos .hero {
+      background: var(--c-grad);
+      color: #fff;
+      padding: 28px 32px 0;
+    }
+    .carlos .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .carlos .hero h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .carlos .hero p { opacity: 0.9; font-size: 14px; margin-top: 4px; }
+    .carlos .sync-pill {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .carlos .sync-dot {
+      width: 8px; height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+
+    .carlos .chrome-tabs {
+      max-width: 1280px;
+      margin: 20px auto 0;
+      display: flex;
+      gap: 6px;
+      padding: 0 32px;
+    }
+    .carlos .chrome-tab {
+      padding: 12px 24px;
+      border-radius: 14px 14px 0 0;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.75);
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .carlos .chrome-tab.on {
+      background: #fff;
+      color: var(--purple);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      transform: translateY(2px);
+    }
+
+    .carlos .workspace {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px 48px;
+    }
+    .carlos .panel {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 0 20px 20px 20px;
+      box-shadow: 0 20px 50px -20px rgba(99,102,241,0.25);
+      padding: 32px;
+      min-height: 520px;
+    }
+    .carlos .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .carlos .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      background: var(--c-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .carlos .page-desc { color: var(--muted); font-size: 14px; margin-top: 6px; max-width: 520px; }
+    .carlos .tag-float {
+      background: var(--c-grad);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .carlos .stepper {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .carlos .stepper::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: linear-gradient(90deg, #6366f1, #a855f7, #06b6d4);
+      border-radius: 2px;
+      opacity: 0.3;
+    }
+    .carlos .stepper-item {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      padding: 0 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .carlos .stepper-dot {
+      width: 40px; height: 40px;
+      margin: 0 auto 8px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid #e4e4e7;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--muted);
+      transition: all 0.3s;
+    }
+    .carlos .stepper-item.on .stepper-dot {
+      border: none;
+      background: var(--c-grad);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.4);
+      transform: scale(1.08);
+    }
+    .carlos .stepper-item.done .stepper-dot {
+      border-color: #6366f1;
+      color: #6366f1;
+    }
+    .carlos .stepper-label { font-size: 12px; font-weight: 600; color: var(--muted); }
+    .carlos .stepper-item.on .stepper-label { color: var(--purple); }
+
+    .carlos .step-content {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .carlos .step-content { grid-template-columns: 1fr; }
+    }
+    .carlos .glass-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px -8px rgba(0,0,0,0.06);
+    }
+    .carlos .glass-card h3 { font-size: 18px; margin-bottom: 12px; }
+    .carlos .glass-card p, .carlos .glass-card li {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .carlos .glass-card ol { padding-left: 20px; margin-top: 12px; }
+    .carlos .glass-card li { margin-bottom: 8px; }
+    .carlos .side-card {
+      background: linear-gradient(145deg, #f5f3ff, #ecfeff);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #ddd6fe;
+    }
+    .carlos .side-card h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--purple); margin-bottom: 12px; }
+    .carlos .cta-bar {
+      position: sticky;
+      bottom: 0;
+      margin: 24px -32px -32px;
+      padding: 16px 32px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-radius: 0 0 20px 20px;
+    }
+    .carlos .btn-grad {
+      flex: 1;
+      min-width: 180px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      background: var(--c-grad);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 24px -8px rgba(99,102,241,0.5);
+      transition: transform 0.2s;
+    }
+    .carlos .btn-grad:hover { transform: translateY(-2px); }
+    .carlos .btn-outline {
+      padding: 14px 20px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .carlos textarea {
+      width: 100%;
+      min-height: 140px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      margin-top: 12px;
+      transition: box-shadow 0.2s;
+    }
+    .carlos textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+    }
+    .carlos .export-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+    @media (max-width: 700px) { .carlos .export-grid { grid-template-columns: 1fr; } }
+    .carlos .export-tile {
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .carlos .export-tile:hover {
+      border-color: #a855f7;
+      box-shadow: 0 8px 24px -12px rgba(168,85,247,0.35);
+      transform: translateY(-2px);
+    }
+    .carlos .export-tile.primary {
+      background: var(--c-grad);
+      color: #fff;
+      border: none;
+    }
+    .carlos .export-tile strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .carlos .export-tile span { font-size: 12px; opacity: 0.85; }
+
+    /* ═══════════════════════════════════════
+       ANA — painéis, contexto, status lateral
+       ═══════════════════════════════════════ */
+    .ana {
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      background: #f1f5f9;
+      min-height: calc(100vh - 56px);
+    }
+    .ana .top-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+    .ana .top-bar-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+    .ana .logo-block { display: flex; align-items: center; gap: 10px; }
+    .ana .logo-block .icon {
+      width: 32px; height: 32px;
+      background: #0ea5e9;
+      color: #fff;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+    }
+    .ana .logo-block strong { font-size: 15px; }
+    .ana .logo-block small { display: block; font-size: 11px; color: var(--muted); }
+
+    .ana .chrome-tabs {
+      display: flex;
+      gap: 2px;
+      margin-left: auto;
+    }
+    .ana .chrome-tab {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      background: #f8fafc;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .ana .chrome-tab.on {
+      background: #fff;
+      color: #0369a1;
+      border-color: var(--border);
+      box-shadow: inset 0 2px 0 #0ea5e9;
+    }
+
+    .ana .layout-3col {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr 280px;
+      gap: 0;
+      min-height: calc(100vh - 120px);
+    }
+    @media (max-width: 1100px) {
+      .ana .layout-3col { grid-template-columns: 1fr; }
+      .ana .col-guide, .ana .col-status { display: none; }
+    }
+
+    .ana .col-guide {
+      background: #fff;
+      border-right: 1px solid var(--border);
+      padding: 20px 16px;
+    }
+    .ana .col-guide h3 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .ana .flow-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13px;
+    }
+    .ana .flow-item .fi-num {
+      width: 24px; height: 24px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .ana .flow-item.active .fi-num { background: #0ea5e9; color: #fff; }
+    .ana .flow-item.done .fi-num { background: #dcfce7; color: var(--ok); }
+    .ana .flow-item strong { display: block; font-size: 13px; }
+    .ana .flow-item span { font-size: 11px; color: var(--muted); }
+
+    .ana .col-main {
+      background: #fff;
+      padding: 24px 28px;
+      overflow-y: auto;
+    }
+    .ana .col-main .page-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .ana .col-main .page-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+    .ana .why-box {
+      background: #f0f9ff;
+      border-left: 4px solid #0ea5e9;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .ana .why-box strong { color: #0369a1; }
+    .ana .section-block {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .ana .section-head {
+      background: #f8fafc;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .ana .section-head h4 { font-size: 14px; font-weight: 600; }
+    .ana .status-chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .ana .status-chip.ok { background: #dcfce7; color: #166534; }
+    .ana .section-body { padding: 16px; font-size: 13px; }
+    .ana textarea, .ana input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .ana .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .ana .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .ana .btn.primary { background: #0369a1; color: #fff; border-color: #0369a1; }
+
+    .ana .col-status {
+      background: #f8fafc;
+      border-left: 1px solid var(--border);
+      padding: 20px 16px;
+    }
+    .ana .col-status h3 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .ana .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .ana .stat-card label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .ana .stat-card .val {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 4px;
+      font-family: ui-monospace, monospace;
+    }
+    .ana .log-list {
+      font-size: 11px;
+      font-family: ui-monospace, monospace;
+      color: var(--muted);
+      line-height: 1.7;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .ana .log-list .ok { color: var(--ok); }
+    .ana .log-list .pend { color: var(--warn); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header class="competition-bar">
+    <h1>Competição de layout · Vault Hub</h1>
+    <p>Mockups interactivos — funcionalidades iguais, UI/UX distinta. Sem dark mode.</p>
+    <div class="persona-btns">
+      <button type="button" class="persona-btn active-marcia" data-persona="marcia">
+        MARCIA
+        <span class="persona-tag">Simples que funciona</span>
+      </button>
+      <button type="button" class="persona-btn" data-persona="carlos">
+        CARLOS
+        <span class="persona-tag">Impacto e modernidade</span>
+      </button>
+      <button type="button" class="persona-btn" data-persona="ana">
+        ANA
+        <span class="persona-tag">Como e por quê</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════ MARCIA ═══════════ -->
+  <div id="marcia" class="variant marcia active">
+    <div class="shell">
+      <div class="brand-row">
+        <div class="brand-icon">V</div>
+        <div>
+          <h2>Vault Hub</h2>
+          <span>Para quem quer resultado, sem complicação</span>
+        </div>
+      </div>
+
+      <nav class="chrome-tabs" aria-label="Ferramentas">
+        <button type="button" class="chrome-tab on" data-marcia-tab="import">Importar Claude</button>
+        <button type="button" class="chrome-tab" data-marcia-tab="vault">Vault Copy</button>
+      </nav>
+
+      <div class="panel" id="marcia-import">
+        <span class="badge">Importação</span>
+        <h1 class="page-title">Importar Conversas Claude</h1>
+        <p class="page-desc">Dois passos só. Baixe do site do Claude e depois rode um comando no Windows.</p>
+
+        <div class="big-step done">
+          <div class="big-step-head">
+            <span class="step-num">1</span>
+            <div>
+              <h3>Baixar do Claude</h3>
+              <p>Você faz no navegador — leva uns 5 minutos.</p>
+            </div>
+          </div>
+          <p>Abra a página de privacidade do Claude → Privacy → Export data → espere o email → baixe o arquivo na pasta Downloads.</p>
+          <button type="button" class="btn-secondary">Abrir página do Claude ↗</button>
+        </div>
+
+        <div class="big-step">
+          <div class="big-step-head">
+            <span class="step-num">2</span>
+            <div>
+              <h3>Transformar em notas</h3>
+              <p>Automático — copie o comando e cole no PowerShell.</p>
+            </div>
+          </div>
+          <div class="hint-box">💡 Não precisa saber programar. É copiar, colar e apertar Enter.</div>
+          <button type="button" class="btn-primary">Copiar comando automático</button>
+        </div>
+      </div>
+
+      <div class="panel hidden" id="marcia-vault">
+        <span class="badge">Extração</span>
+        <h1 class="page-title">Vault Copy</h1>
+        <p class="page-desc">Escolha as pastas, cole os caminhos e exporte.</p>
+
+        <div class="big-step">
+          <div class="big-step-head">
+            <span class="step-num">1</span>
+            <h3>Pasta do Vault (origem)</h3>
+          </div>
+          <button type="button" class="btn-secondary">Selecionar pasta do vault</button>
+          <p style="margin-top:8px;font-size:12px;color:var(--muted)">Padrão: D:\2606VAULT-ClaudeConversasOF-FINAL</p>
+        </div>
+
+        <div class="big-step">
+          <div class="big-step-head">
+            <span class="step-num">2</span>
+            <h3>Colar caminhos</h3>
+          </div>
+          <textarea rows="5" placeholder="Cole caminhos ou resultados de busca (Ctrl+V)…"></textarea>
+        </div>
+
+        <div class="big-step">
+          <div class="big-step-head">
+            <span class="step-num">3</span>
+            <h3>Pasta destino</h3>
+          </div>
+          <button type="button" class="btn-secondary">Selecionar pasta destino</button>
+          <input type="text" value="D:\2606VAULT-ClaudeConversasOF" readonly />
+        </div>
+
+        <div class="export-stack">
+          <button type="button" class="main">Gerar consolidado (com IA)</button>
+          <button type="button">Gerar consolidado (sem IA)</button>
+          <button type="button">Copiar arquivos</button>
+          <button type="button">Copiar + gerar llms.txt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CARLOS ═══════════ -->
+  <div id="carlos" class="variant carlos">
+    <div class="hero">
+      <div class="hero-inner">
+        <div>
+          <h2>Vault Hub</h2>
+          <p>Suas ferramentas de importação e exportação — fluxo dedicado por aba</p>
+        </div>
+        <div class="sync-pill"><span class="sync-dot"></span> Sincronizado · 2 aplicações</div>
+      </div>
+      <nav class="chrome-tabs">
+        <button type="button" class="chrome-tab on" data-carlos-tab="import">💬 Importar Claude</button>
+        <button type="button" class="chrome-tab" data-carlos-tab="vault">📋 Vault Copy</button>
+      </nav>
+    </div>
+
+    <div class="workspace">
+      <div class="panel" id="carlos-import">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Importar Conversas Claude</h1>
+            <p class="page-desc">Traga conversas do Claude para notas organizadas no seu PC.</p>
+          </div>
+          <span class="tag-float">Importação</span>
+        </div>
+
+        <div class="stepper" id="carlos-import-stepper">
+          <div class="stepper-item on" data-step="0">
+            <div class="stepper-dot">01</div>
+            <div class="stepper-label">Baixar do Claude</div>
+          </div>
+          <div class="stepper-item" data-step="1">
+            <div class="stepper-dot">02</div>
+            <div class="stepper-label">Transformar em notas</div>
+          </div>
+        </div>
+
+        <div class="step-content" id="carlos-import-step-0">
+          <div class="glass-card">
+            <h3>Baixar suas conversas</h3>
+            <p>O site do Claude envia um arquivo por email. Siga a sequência:</p>
+            <ol>
+              <li>Abra a página de privacidade no Chrome ou Edge</li>
+              <li>Privacy → Export data → confirme</li>
+              <li>Aguarde o email (5–15 min) e baixe na pasta Downloads</li>
+            </ol>
+          </div>
+          <div class="side-card">
+            <h4>Resultado final</h4>
+            <p>Notas prontas em <strong>D:</strong> — versão limpa e versão extra limpa, sem texto interno do Claude.</p>
+          </div>
+        </div>
+
+        <div class="step-content hidden" id="carlos-import-step-1">
+          <div class="glass-card">
+            <h3>Pipeline automático</h3>
+            <p>Um comando no PowerShell faz todo o trabalho. Copie, cole e Enter.</p>
+            <button type="button" class="btn-grad" style="margin-top:16px;width:100%">Copiar comando automático</button>
+          </div>
+          <div class="side-card">
+            <h4>Tempo estimado</h4>
+            <p>~1 minuto após colar o comando. Abre um bloco de notas com o resumo ao terminar.</p>
+          </div>
+        </div>
+
+        <div class="cta-bar">
+          <button type="button" class="btn-outline" id="carlos-import-prev">← Anterior</button>
+          <button type="button" class="btn-grad" id="carlos-import-next">Próximo passo →</button>
+        </div>
+      </div>
+
+      <div class="panel hidden" id="carlos-vault">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Vault Copy</h1>
+            <p class="page-desc">Extraia, consolide e exporte conversas do vault.</p>
+          </div>
+          <span class="tag-float">Extração</span>
+        </div>
+
+        <div class="stepper" id="carlos-vault-stepper">
+          <div class="stepper-item on" data-step="0"><div class="stepper-dot">01</div><div class="stepper-label">Vault</div></div>
+          <div class="stepper-item" data-step="1"><div class="stepper-dot">02</div><div class="stepper-label">Colar</div></div>
+          <div class="stepper-item" data-step="2"><div class="stepper-dot">03</div><div class="stepper-label">Destino</div></div>
+          <div class="stepper-item" data-step="3"><div class="stepper-dot">04</div><div class="stepper-label">Exportar</div></div>
+        </div>
+
+        <div id="carlos-vault-step-0" class="glass-card">
+          <h3>Pasta do Vault (fonte)</h3>
+          <p>Selecione onde estão as conversas no Obsidian.</p>
+          <button type="button" class="btn-outline" style="margin-top:12px">Selecionar pasta do vault</button>
+        </div>
+        <div id="carlos-vault-step-1" class="glass-card hidden">
+          <h3>Colar caminhos ou resultados</h3>
+          <textarea placeholder="D:\2606VAULT-...\arquivo.md"></textarea>
+        </div>
+        <div id="carlos-vault-step-2" class="glass-card hidden">
+          <h3>Pasta destino</h3>
+          <p>Consolidado grava na raiz; cópias usam subpasta datada.</p>
+          <button type="button" class="btn-outline" style="margin-top:12px">Selecionar pasta destino</button>
+        </div>
+        <div id="carlos-vault-step-3" class="hidden">
+          <div class="export-grid">
+            <button type="button" class="export-tile primary"><strong>Consolidado com IA</strong><span>Resumo + índice automático</span></button>
+            <button type="button" class="export-tile"><strong>Consolidado sem IA</strong><span>Um único .md</span></button>
+            <button type="button" class="export-tile"><strong>Copiar arquivos</strong><span>Subpasta datada</span></button>
+            <button type="button" class="export-tile"><strong>Copiar + llms.txt</strong><span>Para contexto LLM</span></button>
+          </div>
+        </div>
+
+        <div class="cta-bar">
+          <button type="button" class="btn-outline" id="carlos-vault-prev">← Anterior</button>
+          <button type="button" class="btn-grad" id="carlos-vault-next">Continuar →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ANA ═══════════ -->
+  <div id="ana" class="variant ana">
+    <header class="top-bar">
+      <div class="top-bar-inner">
+        <div class="logo-block">
+          <div class="icon">V</div>
+          <div>
+            <strong>Vault Hub</strong>
+            <small>Central de importação e exportação</small>
+          </div>
+        </div>
+        <nav class="chrome-tabs">
+          <button type="button" class="chrome-tab on" data-ana-tab="import">Importar Claude</button>
+          <button type="button" class="chrome-tab" data-ana-tab="vault">Vault Copy</button>
+        </nav>
+      </div>
+    </header>
+
+    <div id="ana-import-wrap" class="layout-3col">
+      <aside class="col-guide">
+        <h3>Fluxo desta ferramenta</h3>
+        <div class="flow-item done">
+          <span class="fi-num">✓</span>
+          <div><strong>Contexto</strong><span>Por que importar</span></div>
+        </div>
+        <div class="flow-item active">
+          <span class="fi-num">1</span>
+          <div><strong>Download manual</strong><span>Site do Claude · ~5 min</span></div>
+        </div>
+        <div class="flow-item">
+          <span class="fi-num">2</span>
+          <div><strong>Pipeline local</strong><span>PowerShell · ~1 min</span></div>
+        </div>
+        <div class="flow-item">
+          <span class="fi-num">→</span>
+          <div><strong>Resultado</strong><span>Pastas em D:</span></div>
+        </div>
+      </aside>
+
+      <main class="col-main">
+        <h1 class="page-title">Importar Conversas Claude</h1>
+        <p class="page-desc">Em dois passos: baixe suas conversas e gere notas organizadas no seu PC.</p>
+
+        <div class="why-box">
+          <strong>Por quê em dois passos?</strong> O Claude só permite export via site (passo 1).
+          A transformação em notas limpas roda localmente no Windows (passo 2) — seus dados não sobem para a nuvem.
+        </div>
+
+        <section class="section-block">
+          <div class="section-head">
+            <h4>Passo 1 — Baixar do Claude</h4>
+            <span class="status-chip">Manual · pendente</span>
+          </div>
+          <div class="section-body">
+            <p>Abra Privacy → Export data no site do Claude. O arquivo chega por email.</p>
+            <div class="btn-row">
+              <button type="button" class="btn primary">Abrir página do Claude ↗</button>
+              <button type="button" class="btn">Copiar link</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-head">
+            <h4>Passo 2 — Transformar em notas</h4>
+            <span class="status-chip">Automático</span>
+          </div>
+          <div class="section-body">
+            <p>Comando único no PowerShell. Copia, cola, Enter.</p>
+            <div class="btn-row">
+              <button type="button" class="btn primary">Copiar comando automático</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="col-status">
+        <h3>Estado actual</h3>
+        <div class="stat-card">
+          <label>Passo activo</label>
+          <div class="val">1 — Download</div>
+        </div>
+        <div class="stat-card">
+          <label>Destino final</label>
+          <div class="val">D:\2606VAULT-…</div>
+        </div>
+        <div class="stat-card">
+          <label>Última acção</label>
+          <div class="val" style="font-size:12px">— nenhuma ainda</div>
+        </div>
+        <h3 style="margin-top:20px">Registo</h3>
+        <div class="log-list">
+          <div class="pend">[--:--] Aguardando download do Claude</div>
+          <div class="ok">[ok] Hub carregado</div>
+        </div>
+      </aside>
+    </div>
+
+    <div id="ana-vault-wrap" class="layout-3col hidden">
+      <aside class="col-guide">
+        <h3>Checklist Vault Copy</h3>
+        <div class="flow-item">
+          <span class="fi-num">1</span>
+          <div><strong>Vault origem</strong><span>File System Access</span></div>
+        </div>
+        <div class="flow-item active">
+          <span class="fi-num">2</span>
+          <div><strong>Colar paths</strong><span>Obsidian / busca</span></div>
+        </div>
+        <div class="flow-item">
+          <span class="fi-num">3</span>
+          <div><strong>Destino</strong><span>Gravação local</span></div>
+        </div>
+        <div class="flow-item">
+          <span class="fi-num">4</span>
+          <div><strong>Export</strong><span>4 modos disponíveis</span></div>
+        </div>
+      </aside>
+
+      <main class="col-main">
+        <h1 class="page-title">Vault Copy</h1>
+        <p class="page-desc">Pesquise no Obsidian, cole caminhos e exporte para pasta destino.</p>
+
+        <div class="why-box">
+          <strong>Como funciona a gravação?</strong> Consolidado (.md) vai para a <em>raiz</em> da pasta destino.
+          Cópias de arquivos e llms.txt vão para subpasta datada (<code>260614-1430_msgm_obsidian</code>).
+        </div>
+
+        <section class="section-block">
+          <div class="section-head">
+            <h4>01 · Pasta do Vault</h4>
+            <span class="status-chip">Pendente</span>
+          </div>
+          <div class="section-body">
+            <button type="button" class="btn">Selecionar pasta do vault (fonte)</button>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-head">
+            <h4>02 · Colar caminhos</h4>
+            <span class="status-chip ok">0 caminhos</span>
+          </div>
+          <div class="section-body">
+            <textarea rows="6" placeholder="Cole caminhos ou [[wikilinks]]…"></textarea>
+            <p style="margin-top:8px;font-size:11px;color:var(--muted)">Guardado automaticamente neste browser.</p>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-head">
+            <h4>03 · Pasta destino</h4>
+            <span class="status-chip">Pendente</span>
+          </div>
+          <div class="section-body">
+            <button type="button" class="btn">Selecionar pasta destino</button>
+            <input type="text" value="D:\2606VAULT-ClaudeConversasOF" style="margin-top:10px" />
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-head"><h4>Exportar</h4></div>
+          <div class="section-body">
+            <div class="btn-row">
+              <button type="button" class="btn primary">Consolidado (IA)</button>
+              <button type="button" class="btn">Consolidado (sem IA)</button>
+              <button type="button" class="btn">Copiar arquivos</button>
+              <button type="button" class="btn">Copiar + llms.txt</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="col-status">
+        <h3>Pré-requisitos</h3>
+        <div class="stat-card">
+          <label>Vault autorizado</label>
+          <div class="val" style="color:var(--warn)">Não</div>
+        </div>
+        <div class="stat-card">
+          <label>Destino autorizado</label>
+          <div class="val" style="color:var(--warn)">Não</div>
+        </div>
+        <div class="stat-card">
+          <label>Caminhos válidos</label>
+          <div class="val">0</div>
+        </div>
+        <div class="stat-card">
+          <label>API key (IA)</label>
+          <div class="val" style="font-size:11px">IndexedDB · local</div>
+        </div>
+        <h3 style="margin-top:16px">Pode exportar?</h3>
+        <p style="font-size:12px;color:var(--muted);line-height:1.5">Complete passos 01 e 03 e cole ≥1 caminho válido.</p>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const personaBtns = document.querySelectorAll("[data-persona]");
+      const variants = document.querySelectorAll(".variant");
+
+      personaBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.persona;
+          variants.forEach((v) => v.classList.toggle("active", v.id === id));
+          personaBtns.forEach((b) => {
+            b.classList.remove("active-marcia", "active-carlos", "active-ana");
+          });
+          btn.classList.add("active-" + id);
+        });
+      });
+
+      /* Marcia tabs */
+      document.querySelectorAll("[data-marcia-tab]").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll("[data-marcia-tab]").forEach((t) => t.classList.remove("on"));
+          tab.classList.add("on");
+          document.getElementById("marcia-import").classList.toggle("hidden", tab.dataset.marciaTab !== "import");
+          document.getElementById("marcia-vault").classList.toggle("hidden", tab.dataset.marciaTab !== "vault");
+        });
+      });
+
+      /* Carlos main tabs */
+      document.querySelectorAll("[data-carlos-tab]").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll("[data-carlos-tab]").forEach((t) => t.classList.remove("on"));
+          tab.classList.add("on");
+          document.getElementById("carlos-import").classList.toggle("hidden", tab.dataset.carlosTab !== "import");
+          document.getElementById("carlos-vault").classList.toggle("hidden", tab.dataset.carlosTab !== "vault");
+        });
+      });
+
+      /* Carlos import stepper */
+      let carlosImportStep = 0;
+      const updateCarlosImportStep = () => {
+        document.querySelectorAll("#carlos-import-stepper .stepper-item").forEach((el, i) => {
+          el.classList.toggle("on", i === carlosImportStep);
+          el.classList.toggle("done", i < carlosImportStep);
+        });
+        document.getElementById("carlos-import-step-0").classList.toggle("hidden", carlosImportStep !== 0);
+        document.getElementById("carlos-import-step-1").classList.toggle("hidden", carlosImportStep !== 1);
+        document.getElementById("carlos-import-prev").disabled = carlosImportStep === 0;
+      };
+      document.getElementById("carlos-import-next").addEventListener("click", () => {
+        if (carlosImportStep < 1) { carlosImportStep++; updateCarlosImportStep(); }
+      });
+      document.getElementById("carlos-import-prev").addEventListener("click", () => {
+        if (carlosImportStep > 0) { carlosImportStep--; updateCarlosImportStep(); }
+      });
+
+      /* Carlos vault stepper */
+      let carlosVaultStep = 0;
+      const vaultPanels = ["carlos-vault-step-0","carlos-vault-step-1","carlos-vault-step-2","carlos-vault-step-3"];
+      const updateCarlosVaultStep = () => {
+        document.querySelectorAll("#carlos-vault-stepper .stepper-item").forEach((el, i) => {
+          el.classList.toggle("on", i === carlosVaultStep);
+          el.classList.toggle("done", i < carlosVaultStep);
+        });
+        vaultPanels.forEach((id, i) => {
+          document.getElementById(id).classList.toggle("hidden", i !== carlosVaultStep);
+        });
+      };
+      document.getElementById("carlos-vault-next").addEventListener("click", () => {
+        if (carlosVaultStep < 3) { carlosVaultStep++; updateCarlosVaultStep(); }
+      });
+      document.getElementById("carlos-vault-prev").addEventListener("click", () => {
+        if (carlosVaultStep > 0) { carlosVaultStep--; updateCarlosVaultStep(); }
+      });
+
+      /* Ana tabs */
+      document.querySelectorAll("[data-ana-tab]").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll("[data-ana-tab]").forEach((t) => t.classList.remove("on"));
+          tab.classList.add("on");
+          document.getElementById("ana-import-wrap").classList.toggle("hidden", tab.dataset.anaTab !== "import");
+          document.getElementById("ana-vault-wrap").classList.toggle("hidden", tab.dataset.anaTab !== "vault");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
