@@ -10,30 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VaultCopyRouteImport } from './routes/vault-copy'
-import { Route as LeituraVaultRouteImport } from './routes/leitura-vault'
-import { Route as InsightsRouteImport } from './routes/insights'
-import { Route as InformacoesPessoaisRouteImport } from './routes/informacoes-pessoais'
 import { Route as ImportarClaudeRouteImport } from './routes/importar-claude'
 import { Route as IndexRouteImport } from './routes/index'
 
 const VaultCopyRoute = VaultCopyRouteImport.update({
   id: '/vault-copy',
   path: '/vault-copy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeituraVaultRoute = LeituraVaultRouteImport.update({
-  id: '/leitura-vault',
-  path: '/leitura-vault',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InsightsRoute = InsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InformacoesPessoaisRoute = InformacoesPessoaisRouteImport.update({
-  id: '/informacoes-pessoais',
-  path: '/informacoes-pessoais',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImportarClaudeRoute = ImportarClaudeRouteImport.update({
@@ -50,61 +32,30 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/importar-claude': typeof ImportarClaudeRoute
-  '/informacoes-pessoais': typeof InformacoesPessoaisRoute
-  '/insights': typeof InsightsRoute
-  '/leitura-vault': typeof LeituraVaultRoute
   '/vault-copy': typeof VaultCopyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/importar-claude': typeof ImportarClaudeRoute
-  '/informacoes-pessoais': typeof InformacoesPessoaisRoute
-  '/insights': typeof InsightsRoute
-  '/leitura-vault': typeof LeituraVaultRoute
   '/vault-copy': typeof VaultCopyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/importar-claude': typeof ImportarClaudeRoute
-  '/informacoes-pessoais': typeof InformacoesPessoaisRoute
-  '/insights': typeof InsightsRoute
-  '/leitura-vault': typeof LeituraVaultRoute
   '/vault-copy': typeof VaultCopyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/importar-claude'
-    | '/informacoes-pessoais'
-    | '/insights'
-    | '/leitura-vault'
-    | '/vault-copy'
+  fullPaths: '/' | '/importar-claude' | '/vault-copy'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/importar-claude'
-    | '/informacoes-pessoais'
-    | '/insights'
-    | '/leitura-vault'
-    | '/vault-copy'
-  id:
-    | '__root__'
-    | '/'
-    | '/importar-claude'
-    | '/informacoes-pessoais'
-    | '/insights'
-    | '/leitura-vault'
-    | '/vault-copy'
+  to: '/' | '/importar-claude' | '/vault-copy'
+  id: '__root__' | '/' | '/importar-claude' | '/vault-copy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ImportarClaudeRoute: typeof ImportarClaudeRoute
-  InformacoesPessoaisRoute: typeof InformacoesPessoaisRoute
-  InsightsRoute: typeof InsightsRoute
-  LeituraVaultRoute: typeof LeituraVaultRoute
   VaultCopyRoute: typeof VaultCopyRoute
 }
 
@@ -115,27 +66,6 @@ declare module '@tanstack/react-router' {
       path: '/vault-copy'
       fullPath: '/vault-copy'
       preLoaderRoute: typeof VaultCopyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leitura-vault': {
-      id: '/leitura-vault'
-      path: '/leitura-vault'
-      fullPath: '/leitura-vault'
-      preLoaderRoute: typeof LeituraVaultRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insights': {
-      id: '/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof InsightsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/informacoes-pessoais': {
-      id: '/informacoes-pessoais'
-      path: '/informacoes-pessoais'
-      fullPath: '/informacoes-pessoais'
-      preLoaderRoute: typeof InformacoesPessoaisRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/importar-claude': {
@@ -158,11 +88,18 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ImportarClaudeRoute: ImportarClaudeRoute,
-  InformacoesPessoaisRoute: InformacoesPessoaisRoute,
-  InsightsRoute: InsightsRoute,
-  LeituraVaultRoute: LeituraVaultRoute,
   VaultCopyRoute: VaultCopyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

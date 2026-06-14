@@ -1,9 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   MessageSquareText,
-  BookOpen,
-  User,
-  Sparkles,
   Search,
   Vault,
   Copy,
@@ -17,7 +14,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Central de aplicações do Vault Hub: importe conversas do Claude para o Obsidian, leia seu vault e gerencie informações pessoais.",
+          "Central do Vault Hub: importe conversas do Claude e extraia notas do vault.",
       },
     ],
   }),
@@ -25,12 +22,12 @@ export const Route = createFileRoute("/")({
 });
 
 type AppCard = {
-  to: "/importar-claude" | "/leitura-vault" | "/informacoes-pessoais" | "/insights" | "/vault-copy";
+  to: "/importar-claude" | "/vault-copy";
   title: string;
   shortTitle: string;
   description: string;
   icon: LucideIcon;
-  category: "Importação" | "Leitura" | "Perfil" | "Análise" | "Extração";
+  category: "Importação" | "Extração";
   iconBg: string;
   iconFg: string;
 };
@@ -44,36 +41,6 @@ const apps: AppCard[] = [
     icon: MessageSquareText,
     category: "Importação",
     iconBg: "bg-[oklch(0.48_0.18_280)]",
-    iconFg: "text-white",
-  },
-  {
-    to: "/leitura-vault",
-    title: "Leitura do Vault",
-    shortTitle: "Ler Vault",
-    description: "Navegue e leia notas importadas do seu vault.",
-    icon: BookOpen,
-    category: "Leitura",
-    iconBg: "bg-[oklch(0.62_0.18_200)]",
-    iconFg: "text-white",
-  },
-  {
-    to: "/informacoes-pessoais",
-    title: "Informações Pessoais",
-    shortTitle: "Perfil",
-    description: "Gerencie dados, preferências e contexto pessoal.",
-    icon: User,
-    category: "Perfil",
-    iconBg: "bg-[oklch(0.6_0.18_340)]",
-    iconFg: "text-white",
-  },
-  {
-    to: "/insights",
-    title: "Insights",
-    shortTitle: "Insights",
-    description: "Visão geral das importações e atividade recente.",
-    icon: Sparkles,
-    category: "Análise",
-    iconBg: "bg-[oklch(0.68_0.16_150)]",
     iconFg: "text-white",
   },
   {
