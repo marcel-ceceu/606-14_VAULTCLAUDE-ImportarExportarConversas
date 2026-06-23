@@ -644,10 +644,11 @@ D:\\2606VAULT-ClaudeConversasOF-FINAL\\2026-05-17-Topico.md
           spellCheck={false}
         />
         <p className="mt-2 text-xs text-muted-foreground">
-          Nova subpasta a cada cópia: <code className="font-mono">{subPreview}</code>
+          Nova subpasta a cada exportação: <code className="font-mono">{subPreview}</code>
           <br />
           <span className="text-[11px]">
-            Consolidado (.md) grava na <strong>raiz</strong> desta pasta; Copiar arquivos / llms usam a subpasta acima.
+            Padrão <code className="font-mono">yyMMdd_HHmm_Export</code> — todos os modos de export gravam dentro
+            dessa subpasta em <code className="font-mono">{DEFAULT_DEST_ABS}</code>.
           </span>
         </p>
       </StepCard>

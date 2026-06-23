@@ -5,4 +5,20 @@ export const PIPELINE_DEFAULTS = {
   downloads: "%USERPROFILE%\\Downloads",
 } as const;
 
-export const PIPELINE_COMMAND = `pwsh -ExecutionPolicy Bypass -File "${PIPELINE_DEFAULTS.scriptDir}\\Run-Pipeline-Auto.ps1"`;
+export type PipelineCommandOptions = {
+  vault?: string;
+  final?: string;
+  skipFinal?: boolean;
+};
+
+export function buildPipelineCommand(opts: PipelineCommandOptions = {}): string {
+  const vault = opts.vault ?? PIPELINE_DEFAULTS.vault;
+  const final = opts.final ?? PIPELINE_DEFAULTS.final;
+  const skipFinal = opts.skipFinal ?? false;
+  const script = `${PIPELINE_DEFAULTS.scriptDir}\\Run-Pipeline-Auto.ps1`;
+  const args = [`-Vault "${vault}"`, `-Final "${final}"`];
+  if (skipFinal) args.push("-SkipFinal");
+  return `pwsh -ExecutionPolicy Bypass -File "${script}" ${args.join(" ")}`;
+}
+
+export const PIPELINE_COMMAND = buildPipelineCommand();

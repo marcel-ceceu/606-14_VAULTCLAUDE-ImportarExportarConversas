@@ -206,12 +206,13 @@ export function mergeRelBase(relPath: string): string {
   return String(relPath).replace(/\\/g, "/").split("/").pop() || relPath;
 }
 
+/** Subpasta por exportação: yyMMdd_HHmm_Export (ex.: 260623_0928_Export) */
 export function buildSubfolderName(date = new Date()): string {
   const pad = (n: number) => String(n).padStart(2, "0");
-  const dd = pad(date.getDate());
-  const mm = pad(date.getMonth() + 1);
   const yy = pad(date.getFullYear() % 100);
-  return `${dd}${mm}${yy}-${pad(date.getHours())}${pad(date.getMinutes())}_msgm_obsidian`;
+  const mm = pad(date.getMonth() + 1);
+  const dd = pad(date.getDate());
+  return `${yy}${mm}${dd}_${pad(date.getHours())}${pad(date.getMinutes())}_Export`;
 }
 
 export function consolidadoFileName(date = new Date()): string {

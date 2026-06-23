@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FeatureShell } from "@/components/FeatureShell";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import {
   Download,
   Terminal,
@@ -11,7 +13,7 @@ import {
   FolderOpen,
   HelpCircle,
 } from "lucide-react";
-import { PIPELINE_COMMAND } from "@/lib/pipeline.config";
+import { buildPipelineCommand, PIPELINE_DEFAULTS } from "@/lib/pipeline.config";
 
 export const Route = createFileRoute("/importar-claude")({
   head: () => ({
@@ -74,14 +76,27 @@ function ImportarClaude() {
   const [whatOpen, setWhatOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [showCommand, setShowCommand] = useState(false);
+  const [outputVault, setOutputVault] = useState(PIPELINE_DEFAULTS.vault);
+  const [outputFinal, setOutputFinal] = useState(PIPELINE_DEFAULTS.final);
+  const [enableFinal, setEnableFinal] = useState(true);
+
+  const pipelineCommand = useMemo(
+    () =>
+      buildPipelineCommand({
+        vault: outputVault,
+        final: outputFinal,
+        skipFinal: !enableFinal,
+      }),
+    [outputVault, outputFinal, enableFinal],
+  );
 
   const handleCopy = async () => {
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(PIPELINE_COMMAND);
+        await navigator.clipboard.writeText(pipelineCommand);
       } else {
         const ta = document.createElement("textarea");
-        ta.value = PIPELINE_COMMAND;
+        ta.value = pipelineCommand;
         ta.setAttribute("readonly", "");
         ta.style.position = "fixed";
         ta.style.opacity = "0";
@@ -119,15 +134,16 @@ function ImportarClaude() {
           <li className="flex gap-2">
             <FolderOpen className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
             <span>
-              <strong className="font-medium text-foreground">Notas prontas</strong> — cada conversa vira um
-              arquivo de texto organizado, sem aquele “texto interno” que o Claude usa para pensar.
+              <strong className="font-medium text-foreground">Notas prontas</strong> — em{" "}
+              <code className="font-mono text-xs">{PIPELINE_DEFAULTS.vault}</code>
             </span>
           </li>
           <li className="flex gap-2">
             <FolderOpen className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
             <span>
-              <strong className="font-medium text-foreground">Versão extra limpa</strong> — outra pasta com
-              as mesmas notas, já sem cumprimentos do tipo “oi, tudo bem?”.
+              <strong className="font-medium text-foreground">Versão extra limpa</strong> — em{" "}
+              <code className="font-mono text-xs">{PIPELINE_DEFAULTS.final}</code> (sem
+              &quot;oi/obrigado/ok…&quot;)
             </span>
           </li>
         </ul>
@@ -269,6 +285,57 @@ function ImportarClaude() {
               </p>
             </header>
 
+            <div className="mb-6 rounded-xl border border-border bg-background/60 p-4 sm:p-5">
+              <h3 className="text-sm font-semibold text-card-foreground">Pastas de saída</h3>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Já vêm preenchidas com o padrão do projeto. O comando copiado usa estes caminhos.
+              </p>
+
+              <label className="mt-4 block text-xs font-medium text-muted-foreground">
+                Pasta principal (notas formatadas)
+              </label>
+              <input
+                type="text"
+                value={outputVault}
+                onChange={(e) => setOutputVault(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-border bg-background/60 px-3 py-2 font-mono text-xs outline-none focus:ring-2 focus:ring-ring"
+                spellCheck={false}
+              />
+
+              <div className="mt-4 flex items-start gap-3">
+                <Checkbox
+                  id="enableFinal"
+                  checked={enableFinal}
+                  onCheckedChange={(checked) => setEnableFinal(checked === true)}
+                  className="mt-0.5"
+                />
+                <div className="min-w-0 flex-1">
+                  <Label htmlFor="enableFinal" className="text-sm font-normal leading-snug text-card-foreground">
+                    Também gerar versão sem cortesias (remove &quot;oi/obrigado/ok…&quot;) numa pasta{" "}
+                    <strong>-FINAL</strong> ao lado
+                  </Label>
+                  {enableFinal && (
+                    <>
+                      <label
+                        htmlFor="outputFinal"
+                        className="mt-3 block text-xs font-medium text-muted-foreground"
+                      >
+                        Pasta -FINAL
+                      </label>
+                      <input
+                        id="outputFinal"
+                        type="text"
+                        value={outputFinal}
+                        onChange={(e) => setOutputFinal(e.target.value)}
+                        className="mt-1 w-full rounded-lg border border-border bg-background/60 px-3 py-2 font-mono text-xs outline-none focus:ring-2 focus:ring-ring"
+                        spellCheck={false}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {/* Passos visuais — tutorial na interface */}
             <ol className="mb-6 space-y-3 rounded-xl border border-primary/20 bg-primary/5 p-4 sm:p-5">
               <p className="text-xs font-semibold uppercase tracking-wider text-primary">Como fazer</p>
@@ -325,7 +392,7 @@ function ImportarClaude() {
             {showCommand && (
               <div className="mb-5 overflow-hidden rounded-xl border border-border bg-[oklch(0.18_0.03_270)]">
                 <pre className="overflow-x-auto px-4 py-4 text-[11px] leading-relaxed text-white/80">
-                  <code className="font-mono whitespace-pre">{PIPELINE_COMMAND}</code>
+                  <code className="font-mono whitespace-pre">{pipelineCommand}</code>
                 </pre>
               </div>
             )}
@@ -350,7 +417,12 @@ function ImportarClaude() {
                   <li>• Acha o arquivo que você baixou do Claude (o mais recente em Downloads).</li>
                   <li>• Converte cada conversa em uma nota legível, com título e data.</li>
                   <li>• Tira o “texto de bastidor” que polui a leitura.</li>
-                  <li>• Gera uma segunda versão ainda mais enxuta, sem cumprimentos repetidos.</li>
+                  <li>• Grava as notas em <code className="font-mono text-xs">{outputVault}</code>.</li>
+                  <li>
+                    {enableFinal
+                      ? `• Gera versão sem cortesias em ${outputFinal}.`
+                      : "• Não gera pasta -FINAL (opção desmarcada)."}
+                  </li>
                   <li>• Mostra um resumo no Bloco de Notas quando terminar.</li>
                 </ul>
               )}

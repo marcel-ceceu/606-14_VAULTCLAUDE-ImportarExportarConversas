@@ -183,9 +183,13 @@ export async function runMerge(
   cb.onPhase("A montar consolidado…");
   const md = buildImportConsolidado(convs, vaultName);
   const outName = consolidadoFileName();
+  const subFolderName = buildSubfolderName();
 
-  cb.onPhase(`A gravar ${outName} na raiz de ${destHandle.name}…`);
-  await writeTextFile(destHandle, outName, md);
+  cb.onPhase(`A criar subpasta ${subFolderName} em ${destHandle.name}…`);
+  const subDest = await createSubfolder(destHandle, subFolderName);
+
+  cb.onPhase(`A gravar ${outName} em ${subFolderName}…`);
+  await writeTextFile(subDest, outName, md);
 
   const okN = convs.filter((c) => !c.erro).length;
   const failN = convs.length - okN;
@@ -193,9 +197,8 @@ export async function runMerge(
     `Consolidado: <strong>${okN}</strong> conversas` +
     (failN ? ` · <strong>${failN}</strong> com erro na leitura` : "") +
     (useAI ? " · <strong>com IA</strong>" : "") +
-    `<br>Gravado na <strong>raiz</strong> da pasta destino do picker (passo 03): ` +
-    `<code>${destHandle.name}\\${outName}</code>` +
-    `<br><span class="text-xs">Não vai para a subpasta <code>DDMMYY-HHMM_msgm_obsidian</code> — só Copiar arquivos / llms usam subpasta.</span>`;
+    `<br>Pasta: <code>${subFolderName}</code> dentro de <code>${destHandle.name}</code>` +
+    `<br>Arquivo: <code>${subFolderName}\\${outName}</code>`;
 
   return { summaryHtml, listItems: okItems(convs) };
 }

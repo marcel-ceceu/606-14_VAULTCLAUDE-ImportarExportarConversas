@@ -2,7 +2,7 @@ import { PIPELINE_DEFAULTS } from "@/lib/pipeline.config";
 import { idbGet, idbSet } from "@/lib/vaultCopyIdb";
 
 export const DEFAULT_VAULT_ABS = PIPELINE_DEFAULTS.final;
-export const DEFAULT_DEST_ABS = "C:\\Users\\Windows\\Desktop\\Area Trabalho\\RESULTADOSGERAL";
+export const DEFAULT_DEST_ABS = "D:\\2606-ConversasExportadas";
 
 export type VaultLayout = {
   contentSubdir: string | null;
